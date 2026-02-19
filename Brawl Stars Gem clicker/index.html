@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brawl stars Clicker</title>
+</head>
+<audio src="Mandy.mp3" autoplay loop>
+</audio>
+<style>
+    body {
+        background-image: url(Background.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        display: grid;
+        place-items: center;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        user-select: none;
+        position: relative;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+    }
+
+    .green-text {
+        font-size: 32px;
+        color: rgb(0, 111, 74);
+        font-weight: 700;
+        text-shadow: 2px 2px 3px rgb(0, 130, 130);
+    }
+
+    .main {
+        display: flex;
+        gap: 200px;
+    }
+
+    .left h3 {
+        text-align: center;
+        font-size: 30px;
+        margin-bottom: 50px;
+    }
+
+    .gem-image {
+        width: 300px;
+        margin-bottom: 100px;
+    }
+
+    .gem-image:hover {
+        transform: scale(1.02);
+        cursor: pointer;
+    }
+
+    .gem-image:active {
+        transform: scale(0.97);
+    }
+
+    .upgrade {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 330px;
+        height: 60px;
+        border: 4px solid black;
+        padding: 10px 20px;
+        border-radius: 20px;
+        background-color: white;
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .upgrade:hover {
+        transform: scale(1.02);
+    }
+
+    .upgrade:active {
+        transform: scale(0.98);
+    }
+
+    .gem-img-container {
+        position: relative;
+
+    }
+
+    .upgrade-img {
+        width: 55px;
+    }
+
+    .gem-img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .cost-info {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .mid-section h4 {
+        margin: 0;
+        margin-bottom: 20px;
+        font-size: 15px;
+    }
+
+    .mid-section p {
+        margin: 0;
+    }
+
+    .next-level.info {
+        position: absolute;
+        right: -105px;
+        background-color: gray;
+        height: 80px;
+        width: 100px;
+        text-align: center;
+    }
+
+    .statistics {
+        position: absolute;
+        bottom: 0;
+        width: 450px;
+        padding: 30px;
+        border: 5px rgb(0, 0, 0) solid;
+        background-color: white;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
+        left: 50%;
+        transform: translate(-50%);
+    }
+
+    .texts {
+        display: flex;
+        gap: 100px;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 22px;
+    }
+
+    .fade-up {
+        animation: fade-up 1s;
+    }
+
+    .upgrade {
+        transition: background-color 0.3s, filter 0.3s;
+    }
+
+    /* Optional: This makes the button look slightly dark UNTIL you have enough gems */
+    /* You would need to add a "locked" class via JavaScript to use this */
+    .locked {
+        filter: brightness(0.5);
+        pointer-events: none;
+    }
+
+    @keyframes fade-up {
+        0% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        20% {
+            transform: translateY(-5px);
+            opacity: 0.9;
+        }
+
+        40% {
+            transform: translateY(-13px);
+            opacity: 0.75;
+        }
+
+        60% {
+            transform: translateY(-25px);
+            opacity: 0.55;
+        }
+
+        80% {
+            transform: translateY(-22px);
+            opacity: 0.3;
+        }
+
+        100% {
+            transform: translateY(-65px);
+            opacity: 0.0;
+        }
+    }
+
+    .win-button {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        width: 120px;
+        height: 120px;
+        background: gold;
+        border: 5px solid black;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        cursor: pointer;
+        transition: 0.3s;
+        z-index: 100;
+    }
+
+
+    .win-button:hover {
+        transform: scale(1.1) rotate(5deg);
+        background: #fff200;
+    }
+
+    .floating-text {
+        position: absolute;
+        color: #00ff95;
+        font-weight: bold;
+        pointer-events: none;
+        animation: floatUp 0.8s ease-out forwards;
+    }
+
+    @keyframes floatUp {
+        0% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateY(-100px);
+            opacity: 0;
+        }
+    }
+</style>
+
+<body>
+    <h1 style="font-size: small;">TRY TO GET TO INFINITY GEMS</h1>
+    <section>
+        <div class="main">
+            <div class="left">
+                <h3>Gems: </br><span class="gem-cost green-text">0</span></h3>
+                <div class="gem-img-container">
+                    <img src="gemas.png" alt="" class="gem-image" onclick="incrementGem(event)" draggable="false">
+                </div>
+
+            </div>
+            <div class="right">
+
+                <div class="upgrade" onclick="buyClicker()">
+                    <div class="left-section">
+                        <img src="POCO.png" class="upgrade-img">
+                    </div>
+                    <div class="mid-section">
+                        <h4>NERF POCO</h4>
+                        <div class="cost-info">
+                            <p><span class="clicker-cost">100</span></p>
+                            <img src="gemas.png" class="gem-img">
+                        </div>
+                    </div>
+                    <div class="right-section">
+                        Level <span class="clicker-level">0</span>
+                    </div>
+                    <div class="next-level-info">
+                        <p>
+                            +<span class="clicker-increase">1</span> gems<br /> per click
+                        </p>
+                    </div>
+                </div>
+
+                <div class="upgrade" onclick="buyPickaxe()">
+                    <div class="left-section">
+                        <img src="Jessie-Turret.png" class="upgrade-img">
+                    </div>
+                    <div class="mid-section">
+                        <h4>Jessie's Turret</h4>
+                        <div class="cost-info">
+                            <p><span class="pickaxe-cost">1000</span></p>
+                            <img src="gemas.png" class="gem-img">
+                        </div>
+                    </div>
+                    <div class="right-section">
+                        Level <span class="pickaxe-level">0</span>
+                    </div>
+                    <div class="next-level-info">
+                        <p>
+                            +<span class="pickaxe-increase">4</span> gems<br /> per second
+                        </p>
+                    </div>
+                </div>
+
+                <div class="upgrade" onclick="buyMiner()">
+                    <div class="left-section">
+                        <img src="Bruce.png" class="upgrade-img">
+                    </div>
+                    <div class="mid-section">
+                        <h4>Bruce</h4>
+                        <div class="cost-info">
+                            <p><span class="miner-cost">4000</span></p>
+                            <img src="gemas.png" class="gem-img">
+                        </div>
+                    </div>
+                    <div class="right-section">
+                        Level <span class="miner-level">0</span>
+                    </div>
+                    <div class="next-level-info">
+                        <p>
+                            +<span class="miner-increase">24</span> gems<br /> per second
+                        </p>
+                    </div>
+                </div>
+
+                <div class="upgrade" onclick="buyPrestige()">
+                    <div class="left-section">
+                        <img src="Prestige.png" class="upgrade-img">
+                    </div>
+                    <div class="mid-section">
+                        <h4>PRESTIGE</h4>
+                        <div class="cost-info">
+                            <p><span class="prestige-cost">1000000</span></p>
+                            <img src="gemas.png" class="gem-img">
+                        </div>
+                    </div>
+                    <div class="right-section">
+                        Level <span class="prestige-level">0</span>
+                    </div>
+                    <div class="next-level-info">
+                        <p style="font-size: 10px;">
+                            EVERYTHING<br> BUT BETTER
+                        </p>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="statistics">
+            <div class="texts">
+                <p>Gems per Click: <span id="gpc-text" class="green-text">1</span></p>
+                <p>Gems per second: <span id="gps-text" class="green-text">0</span></p>
+            </div>
+
+        </div>
+
+    </section>
+<script>
+    let gem = document.querySelector('.gem-cost');
+    let parsedGem = 0; 
+    
+    let clickerCost = document.querySelector('.clicker-cost');
+    let parsedClickerCost = parseFloat(clickerCost.innerHTML);
+    let clickerLevel = document.querySelector(".clicker-level");
+    let clickerIncrease = document.querySelector(".clicker-increase");
+    let parsedClickerIncrease = parseFloat(clickerIncrease.innerHTML);
+    let gpc = 1;
+
+    let pickaxeCost = document.querySelector('.pickaxe-cost');
+    let parsedpickaxeCost = parseFloat(pickaxeCost.innerHTML);
+    let pickaxeLevel = document.querySelector(".pickaxe-level");
+    let pickaxeIncrease = document.querySelector(".pickaxe-increase");
+    let parsedpickaxeIncrease = parseFloat(pickaxeIncrease.innerHTML);
+
+    let minerCost = document.querySelector('.miner-cost');
+    let parsedminerCost = parseFloat(minerCost.innerHTML);
+    let minerLevel = document.querySelector(".miner-level");
+    let minerIncrease = document.querySelector(".miner-increase");
+    let parsedminerIncrease = parseFloat(minerIncrease.innerHTML);
+    
+    let gps = 0;
+    let increase = 1.25;
+
+    let prestigeCost = document.querySelector('.prestige-cost');
+    let parsedprestigeCost = parseFloat(prestigeCost.innerHTML);
+    let prestigeLevel = document.querySelector(".prestige-level");
+
+    let gpsText = document.getElementById("gps-text");
+    let gpcText = document.getElementById("gpc-text");
+    let gemImgContainer = document.querySelector('.gem-img-container');
+
+    function incrementGem(event) {
+        parsedGem += gpc;
+        updateDisplay();
+
+        const x = event.offsetX;
+        const y = event.offsetY;
+
+        const div = document.createElement('div');
+        div.innerHTML = `+${Math.round(gpc)}`;
+        div.style.cssText = `color: white; position: absolute; top: ${y}px; left: ${x}px; font-size: 20px; pointer-events: none; z-index:100;`;
+        gemImgContainer.appendChild(div);
+        div.classList.add('fade-up');
+
+        setTimeout(() => div.remove(), 800);
+    }
+
+    function buyClicker() {
+        if (parsedGem >= parsedClickerCost) {
+            parsedGem -= parsedClickerCost;
+            clickerLevel.innerHTML++;
+            
+            gpc += parsedClickerIncrease; 
+            parsedClickerIncrease = parseFloat((parsedClickerIncrease * increase).toFixed(1));
+            clickerIncrease.innerHTML = parsedClickerIncrease;
+
+            parsedClickerCost *= 1.5;
+            clickerCost.innerHTML = Math.round(parsedClickerCost);
+            updateDisplay();
+        }
+    }
+
+    function buyPickaxe() {
+        if (parsedGem >= parsedpickaxeCost) {
+            parsedGem -= parsedpickaxeCost;
+            pickaxeLevel.innerHTML++;
+            
+            gps += parsedpickaxeIncrease;
+            parsedpickaxeIncrease = parseFloat((parsedpickaxeIncrease * increase).toFixed(1));
+            pickaxeIncrease.innerHTML = parsedpickaxeIncrease;
+
+            parsedpickaxeCost *= 1.5;
+            pickaxeCost.innerHTML = Math.round(parsedpickaxeCost);
+            updateDisplay();
+        }
+    }
+
+    function buyMiner() {
+        if (parsedGem >= parsedminerCost) {
+            parsedGem -= parsedminerCost;
+            minerLevel.innerHTML++;
+            
+            gps += parsedminerIncrease;
+            parsedminerIncrease = parseFloat((parsedminerIncrease * increase).toFixed(1));
+            minerIncrease.innerHTML = parsedminerIncrease;
+
+            parsedminerCost *= 1.5;
+            minerCost.innerHTML = Math.round(parsedminerCost);
+            updateDisplay();
+        }
+    }
+
+    setInterval(() => {
+        parsedGem += gps / 10; 
+        updateDisplay();
+    }, 100);
+
+    function updateDisplay() {
+        gem.innerHTML = Math.round(parsedGem);
+        gpcText.innerHTML = Math.round(gpc);
+        gpsText.innerHTML = Math.round(gps);
+    }
+
+    function buyPrestige() {
+        if (parsedGem >= parsedprestigeCost) {
+            parsedGem = 0;
+            prestigeLevel.innerHTML++;
+            gpc = 1;
+            gps = 0;
+            increase *= 2; 
+
+            parsedClickerCost = 100;
+            parsedClickerIncrease = 1;
+            clickerLevel.innerHTML = 0;
+            clickerCost.innerHTML = parsedClickerCost;
+            clickerIncrease.innerHTML = parsedClickerIncrease;
+
+            parsedpickaxeCost = 1000;
+            parsedpickaxeIncrease = 4;
+            pickaxeLevel.innerHTML = 0;
+            pickaxeCost.innerHTML = parsedpickaxeCost;
+            pickaxeIncrease.innerHTML = parsedpickaxeIncrease;
+
+            parsedminerCost = 4000;
+            parsedminerIncrease = 24;
+            minerLevel.innerHTML = 0;
+            minerCost.innerHTML = parsedminerCost;
+            minerIncrease.innerHTML = parsedminerIncrease;
+
+            parsedprestigeCost *= 10; // Set to a reasonable next goal
+            prestigeCost.innerHTML = Math.round(parsedprestigeCost);
+            updateDisplay();
+        }
+    }
+</script>
+</body>
+
+</html>
